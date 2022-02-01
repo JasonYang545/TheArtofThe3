@@ -1,0 +1,7 @@
+scp /Users/jasonyang/Documents/NYU/Fall2021/PBDAA/FinalProject/Data/2008Stats.csv jy2634@peel.hpc.nyu.edu:/home/jy2634
+
+scp /Users/jasonyang/Documents/NYU/Fall2021/PBDAA/FinalProject/Data/2016Stats.csv jy2634@peel.hpc.nyu.edu:/home/jy2634
+
+hdfs dfs -put 2008Stats.csv /FinalProject/input
+
+hdfs dfs -put 2016Stats.csv /FinalProject/input
