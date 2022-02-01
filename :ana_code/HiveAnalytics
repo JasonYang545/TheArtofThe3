@@ -1,0 +1,53 @@
+CREATE EXTERNAL TABLE Player2008(team STRING, playerName STRING, threeP INT, threePA INT, threePP DOUBLE, points STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE LOCATION '/user/jy2634/Player2008';
+
+CREATE EXTERNAL TABLE Player2016(team STRING, playerName STRING, threeP INT, threePA INT, threePP DOUBLE, points STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE LOCATION '/user/jy2634/Player2016';  
+
+load data inpath 'hdfs://horton.hpc.nyu.edu:8020/user/jy2634/FinalProject/DataClean/2008/output/part-r-00000' overwrite into table Player2008;
+
+load data inpath 'hdfs://horton.hpc.nyu.edu:8020/user/jy2634/FinalProject/DataClean/2016/output/part-r-00000' overwrite into table Player2016;
+
+CREATE TABLE nba2008 AS SELECT t.gameid, t.team, t.madethrees, t.missedthrees, t.attempts, t.win, p.playername, p.threep, p.threepa, p.threepp, p.points FROM nl1776.2008Stats t LEFT OUTER JOIN Player2008 p ON (t.team = p.team);
+
+CREATE TABLE nba2016 AS SELECT t.gameid, t.team, t.madethrees, t.missedthrees, t.attempts, t.win, p.playername, p.threep, p.threepa, p.threepp, p.points FROM nl1776.2016Stats t LEFT OUTER JOIN Player2016 p ON (t.team = p.team);
+
+SELECT SUM(attempts) FROM nba2008;
+SELECT SUM(attempts) FROM nba2016;
+
+SELECT team, SUM(win) as wins from nba2008 GROUP BY team SORT BY wins DESC;
+SELECT team, SUM(win) as wins from nba2016 GROUP BY team SORT BY wins DESC;
+
+SELECT AVG(threepp) as avgThreePP FROM nba2008 GROUP BY playername IS NOT NULL;
+SELECT AVG(threepp) as avgThreePP FROM nba2016 GROUP BY playername IS NOT NULL;
+
+SELECT SUM(madethrees)/1230 FROM nba2008;
+SELECT SUM(madethrees)/1230 FROM nba2016;
+
+SELECT team, (SUM(madethrees)/SUM(attempts)) as teampp FROM nba2008 GROUP BY team SORT BY teampp DESC;
+SELECT team, (SUM(madethrees)/SUM(attempts)) as teampp FROM nba2016 GROUP BY team SORT BY teampp DESC;
+
+SELECT team, SUM(win) as wins, (SUM(madethrees)/SUM(attempts)) as teampp FROM nba2008 WHERE team="CLE";
+SELECT team, SUM(win) as wins, (SUM(madethrees)/SUM(attempts)) as teampp FROM nba2016 WHERE team="CLE";
+
+SELECT team, SUM(win) as wins, (SUM(madethrees)/SUM(attempts)) as teampp FROM nba2008 WHERE team="GSW";
+SELECT team, SUM(win) as wins, (SUM(madethrees)/SUM(attempts)) as teampp FROM nba2016 WHERE team="GSW";
+
+SELECT team, SUM(madethrees) as makes, SUM(attempts) as attempts, SUM(win) as wins, (SUM(madethrees)/SUM(attempts)) as teampp, playername, threepp FROM nba2008 GROUP BY team, playername, threepp SORT BY teampp DESC;
+
+SELECT team, SUM(madethrees) as makes, SUM(attempts) as attempts, SUM(win) as wins, (SUM(madethrees)/SUM(attempts)) as teampp, playername, threepp FROM nba2016 GROUP BY team, playername, threepp SORT BY teampp DESC;
+
+SELECT *, ((threep*3)/points) as proportion FROM Player2008 SORT BY threepp DESC LIMIT 5;
+SELECT *, ((threep*3)/points) as proportion FROM Player2016 SORT BY threepp DESC LIMIT 5;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
