@@ -1,3 +1,8 @@
+<img width="1011" alt="Screen Shot 2022-02-12 at 1 53 57 PM" src="https://user-images.githubusercontent.com/47124636/153724403-44571847-1bcb-44a0-87fc-0f37e92fc057.png">
+
+
+
+
 HDFS DIRECTORY AND CONTAINED FILES EXPLAINATION:
 
 /FinalProject -> contains all datasets and java classes used for MapReduce section of this project
